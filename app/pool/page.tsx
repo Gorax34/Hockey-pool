@@ -5,13 +5,6 @@ import {
   useState,
 } from "react";
 
-import {
-  collection,
-  getDocs,
-} from "firebase/firestore";
-
-import { db } from "@/app/firebase";
-
 export default function PoolPage() {
 
   const [games, setGames] =
@@ -28,36 +21,30 @@ export default function PoolPage() {
         try {
 
           // =========================
-          // LOAD FIREBASE GAMES
+          // NHL API
           // =========================
 
-          const snapshot =
-            await getDocs(
-
-              collection(
-                db,
-                "games"
-              )
-
+          const response =
+            await fetch(
+              "https://api-web.nhle.com/v1/schedule/now"
             );
 
           const data =
-            snapshot.docs.map(
-              (doc) => ({
-
-                id: doc.id,
-
-                ...doc.data(),
-
-              })
-            );
+            await response.json();
 
           console.log(
-            "FIREBASE GAMES:",
+            "NHL API:",
             data
           );
 
-          setGames(data);
+          // =========================
+          // TODAY GAMES
+          // =========================
+
+          const todayGames =
+            data.gameWeek[0].games;
+
+          setGames(todayGames);
 
         } catch (error) {
 
@@ -87,13 +74,11 @@ export default function PoolPage() {
 
       <div className="min-h-screen bg-black/60 p-8">
 
-        
-
         {/* TITLE */}
 
         <h1 className="text-7xl font-bold mb-10">
 
-          Matchs du CH 🏒
+          Matchs NHL 🏒
 
         </h1>
 
@@ -133,13 +118,13 @@ export default function PoolPage() {
                     <div className="text-4xl font-bold">
 
                       {
-                        game.homeTeam
+                        game.awayTeam.abbrev
                       }
 
                       {" vs "}
 
                       {
-                        game.awayTeam
+                        game.homeTeam.abbrev
                       }
 
                     </div>
@@ -148,8 +133,10 @@ export default function PoolPage() {
 
                       {
 
-                        game.finished
+                        game.gameState === "OFF"
                           ? "FINAL"
+                          : game.gameState === "LIVE"
+                          ? "LIVE"
                           : "Scheduled"
 
                       }
@@ -163,16 +150,30 @@ export default function PoolPage() {
                   <div className="text-right text-yellow-400 font-bold text-5xl">
 
                     {
-                      game.homeScore
+                      game.awayTeam.score ?? 0
                     }
 
                     {" - "}
 
                     {
-                      game.awayScore
+                      game.homeTeam.score ?? 0
                     }
 
                   </div>
+
+                </div>
+
+                {/* TIME */}
+
+                <div className="mt-4 text-xl text-gray-300">
+
+                  {
+
+                    new Date(
+                      game.startTimeUTC
+                    ).toLocaleString()
+
+                  }
 
                 </div>
 
@@ -181,7 +182,7 @@ export default function PoolPage() {
                 <div className="flex gap-4 mt-6">
 
                   <a
-                    href={`/predict/mtl-buf`}
+                    href={`/predict/${game.id}`}
                     className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl text-2xl font-bold"
                   >
 
