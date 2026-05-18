@@ -1,49 +1,119 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
-import { useParams } from "next/navigation";
-
-import { db } from "../../firebase";
+import {
+  useParams,
+} from "next/navigation";
 
 import {
   collection,
   getDocs,
 } from "firebase/firestore";
 
+import { db } from "@/app/firebase";
+
 export default function PredictionsPage() {
 
-  const params = useParams();
+  const params =
+    useParams();
 
-  const match = params.match;
+  const match =
+    String(params.match);
 
-  const [predictions, setPredictions] = useState<any[]>([]);
+  const [
+    predictions,
+    setPredictions
+  ] = useState<any[]>([]);
+
+  const [
+    loading,
+    setLoading
+  ] = useState(true);
 
   useEffect(() => {
 
-    async function fetchPredictions() {
+    async function loadPredictions() {
 
-      const querySnapshot = await getDocs(
-        collection(db, "predictions")
-      );
+      try {
 
-      const allPredictions: any[] = [];
+        // =========================
+        // FIREBASE
+        // =========================
 
-      querySnapshot.forEach((doc) => {
+        const snapshot =
+          await getDocs(
 
-        allPredictions.push(doc.data());
+            collection(
+              db,
+              "predictions"
+            )
 
-      });
+          );
 
-      const filtered = allPredictions.filter(
-        (prediction) => prediction.matchId === match
-      );
+        // =========================
+        // FORMAT DATA
+        // =========================
 
-      setPredictions(filtered);
+        const data =
+          snapshot.docs.map(
+            (doc) => ({
+
+              id: doc.id,
+
+              ...doc.data(),
+
+            })
+          );
+
+        console.log(
+          "ALL PREDICTIONS:",
+          data
+        );
+
+        console.log(
+          "CURRENT MATCH:",
+          match
+        );
+
+        // =========================
+        // FILTER GAME
+        // =========================
+
+        const filtered =
+          data.filter(
+
+            (prediction: any) =>
+
+              String(
+                prediction.gameId
+              ) === match
+
+          );
+
+        console.log(
+          "FILTERED:",
+          filtered
+        );
+
+        setPredictions(filtered);
+
+      } catch (error) {
+
+        console.log(error);
+
+      } finally {
+
+        setLoading(false);
+
+      }
 
     }
 
-    fetchPredictions();
+    loadPredictions();
 
   }, [match]);
 
@@ -52,111 +122,166 @@ export default function PredictionsPage() {
     <main
       className="min-h-screen bg-cover bg-center bg-fixed text-white"
       style={{
-        backgroundImage: "url('/LNH.png')",
+        backgroundImage:
+          "url('/LNH.png')",
       }}
     >
 
-      {/* OVERLAY */}
-      <div className="min-h-screen bg-black/55">
+      <div className="min-h-screen bg-black/60 p-8">
 
-        {/* NAVBAR */}
-        <div className="w-full bg-black/80 border-b border-white/10 px-8 py-5 flex items-center justify-between">
+        {/* TITLE */}
 
-          <h1 className="text-3xl font-bold text-red-500">
-            Hockey Pool
-          </h1>
+        <h1 className="text-6xl font-bold mb-10">
 
-          <div className="flex gap-8 text-xl font-semibold">
+          Prédictions 🏒
 
-            <a href="/dashboard">
-              Accueil
-            </a>
+        </h1>
 
-            <a href="/create-pool">
-              Créer Pool
-            </a>
+        {/* LOADING */}
 
-            <a href="/join-pool">
-              Rejoindre
-            </a>
+        {loading && (
+
+          <div className="text-3xl">
+
+            Chargement...
 
           </div>
 
-        </div>
+        )}
 
-        {/* CONTENU */}
-        <div className="p-8">
+        {/* NO PREDICTIONS */}
 
-          <h1 className="text-6xl font-bold mb-8">
-            Prédictions : {match} 🏒
-          </h1>
+        {!loading && predictions.length === 0 && (
 
-          {/* BOX PRINCIPALE */}
-          <div className="bg-black/80 rounded-3xl p-6 w-[420px] h-[600px] overflow-y-auto border border-white/10">
+          <div className="text-3xl text-gray-300">
 
-            <div className="space-y-4">
+            Aucune prédiction pour ce match.
 
-              {predictions.map((prediction, index) => (
+          </div>
 
-                <div
-                  key={index}
-                  className="bg-zinc-900/95 rounded-2xl p-4"
-                >
+        )}
 
-                  {/* HEADER */}
-                  <div className="flex items-center justify-between mb-3">
+        {/* LIST */}
 
-                    <h2 className="text-2xl font-bold">
-                      {prediction.memberName}
-                    </h2>
+        <div className="space-y-6">
 
-                    <div className="text-2xl font-bold text-yellow-400">
+          {predictions.map(
+            (
+              prediction,
+              index
+            ) => (
 
-                      {prediction.homeTeam}
-                      {" "}
-                      {prediction.homeScorePrediction}
+              <div
+                key={index}
+                className="bg-black/80 border border-white/10 rounded-3xl p-6 max-w-[700px]"
+              >
 
-                      {" - "}
+                {/* HEADER */}
 
-                      {prediction.awayScorePrediction}
-                      {" "}
-                      {prediction.awayTeam}
+                <div className="flex items-center justify-between mb-4">
 
-                    </div>
+                  <h2 className="text-4xl font-bold">
+
+                    {
+                      prediction.player
+                    }
+
+                  </h2>
+
+                  <div className="text-5xl font-bold text-yellow-400">
+
+                    {
+                      prediction.homeScore
+                    }
+
+                    {" - "}
+
+                    {
+                      prediction.awayScore
+                    }
 
                   </div>
 
-                  {/* JOUEURS */}
-                  <div className="flex flex-wrap gap-2">
+                </div>
 
-                    {prediction.players?.map((player: string, i: number) => (
+                {/* MATCH */}
+
+                <div className="text-2xl mb-4">
+
+                  {
+                    prediction.homeTeam
+                  }
+
+                  {" VS "}
+
+                  {
+                    prediction.awayTeam
+                  }
+
+                </div>
+
+                {/* WINNER */}
+
+                <div className="text-green-400 text-2xl font-bold mb-5">
+
+                  Gagnant :
+
+                  {" "}
+
+                  {
+                    prediction.winner
+                  }
+
+                </div>
+
+                {/* PLAYERS */}
+
+                <div className="flex flex-wrap gap-2 mb-6">
+
+                  {prediction.players?.map(
+                    (
+                      player: string,
+                      i: number
+                    ) => (
 
                       <div
                         key={i}
-                        className="bg-red-600 px-3 py-1 rounded-lg text-xs font-bold"
+                        className="bg-red-600 px-4 py-2 rounded-xl text-sm font-bold"
                       >
+
                         {player}
+
                       </div>
 
-                    ))}
+                    )
+                  )}
+
+                </div>
+
+                {/* POINTS */}
+
+                <div className="flex items-center justify-between">
+
+                  <div className="text-2xl">
+
+                    Points du pool
+
+                  </div>
+
+                  <div className="text-5xl font-bold text-yellow-400">
+
+                    {
+                      prediction.points ?? 0
+                    }
 
                   </div>
 
                 </div>
 
-              ))}
+              </div>
 
-              {predictions.length === 0 && (
-
-                <div className="text-gray-300 text-xl">
-                  Aucune prédiction pour ce match.
-                </div>
-
-              )}
-
-            </div>
-
-          </div>
+            )
+          )}
 
         </div>
 
@@ -165,4 +290,5 @@ export default function PredictionsPage() {
     </main>
 
   );
+
 }

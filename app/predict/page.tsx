@@ -15,6 +15,10 @@ import {
 
 import { db } from "@/app/firebase";
 
+import {
+  useParams,
+} from "next/navigation";
+
 // =========================
 // JOUEURS NHL
 // =========================
@@ -63,6 +67,13 @@ const allPlayers = [
 ];
 
 export default function PredictPage() {
+
+  // =========================
+  // PARAMS
+  // =========================
+
+  const params =
+    useParams();
 
   // =========================
   // STATES
@@ -176,10 +187,6 @@ export default function PredictPage() {
   const savePrediction =
     async () => {
 
-      console.log(
-        "SAVE FUNCTION WORKS"
-      );
-
       try {
 
         // =========================
@@ -200,6 +207,12 @@ export default function PredictPage() {
                 "player",
                 "==",
                 name
+              ),
+
+              where(
+                "gameId",
+                "==",
+                params.match
               )
 
             )
@@ -210,82 +223,54 @@ export default function PredictPage() {
         if (!existing.empty) {
 
           alert(
-            "Tu as déjà une prédiction"
+            "Tu as déjà une prédiction pour ce match"
           );
 
           return;
 
         }
 
-        console.log(
-          "BEFORE ADDDOC"
-        );
-
         // =========================
         // SAVE FIREBASE
         // =========================
 
         await addDoc(
+  collection(
+    db,
+    "predictions"
+  ),
 
-          collection(
-            db,
-            "predictions"
-          ),
+  {
 
-          {
+    player:
+      String(name),
 
-            player:
-              String(name),
+    gameId:
+      String(params.match),
 
-            match:
-              "buf-mtl",
+    homeTeam:
+      "MTL",
 
-            homeTeam:
-              "MTL",
+    awayTeam:
+      "BUF",
 
-            awayTeam:
-              "BUF",
+    homeScore:
+      Number(homeScore),
 
-            homeScore:
-              Number(
-                homeScore
-              ),
+    awayScore:
+      Number(awayScore),
 
-            awayScore:
-              Number(
-                awayScore
-              ),
+    winner:
+      winner,
 
-            seriesHomeWins:
-              Number(
-                seriesHomeWins
-              ),
+    players:
+      selectedPlayers,
 
-            seriesAwayWins:
-              Number(
-                seriesAwayWins
-              ),
+    points:
+      0,
 
-            winner:
-              String(
-                winner
-              ),
-
-            players:
-              [...players],
-
-            points: 0,
-
-            createdAt:
-              Date.now(),
-
-          }
-
-        );
-
-        console.log(
-          "FIREBASE SAVE OK"
-        );
+  }
+);
 
         alert(
           "Prédiction enregistrée !"
@@ -317,8 +302,6 @@ export default function PredictPage() {
     >
 
       <div className="min-h-screen bg-black/55">
-
-        
 
         {/* PAGE */}
         <div className="flex justify-center pt-16">
