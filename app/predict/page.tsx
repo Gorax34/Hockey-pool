@@ -1,0 +1,530 @@
+"use client";
+
+import {
+  useState,
+  useMemo,
+} from "react";
+
+import {
+  addDoc,
+  collection,
+  getDocs,
+  query,
+  where,
+} from "firebase/firestore";
+
+import { db } from "@/app/firebase";
+
+// =========================
+// JOUEURS NHL
+// =========================
+
+const allPlayers = [
+
+  // MTL
+  "Suzuki",
+  "Caufield",
+  "Slafkovsky",
+  "Hutson",
+  "Matheson",
+  "Demidov",
+  "Evans",
+  "Newhook",
+  "Dach",
+  "Anderson",
+  "Gallagher",
+  "Armia",
+  "Roy",
+  "Heineman",
+  "Xhekaj",
+  "Savard",
+  "Guhle",
+  "Struble",
+  "Primeau",
+  "Montembeault",
+
+  // BUF
+  "Thompson",
+  "Tuch",
+  "Peterka",
+  "Cozens",
+  "Quinn",
+  "Benson",
+  "Dahlin",
+  "Power",
+  "Byram",
+  "Kulich",
+  "Greenway",
+  "Krebs",
+  "Samuelsson",
+  "Jokiharju",
+  "Luukkonen",
+
+];
+
+export default function PredictPage() {
+
+  // =========================
+  // STATES
+  // =========================
+
+  const [name, setName] =
+    useState("");
+
+  const [homeScore, setHomeScore] =
+    useState("");
+
+  const [awayScore, setAwayScore] =
+    useState("");
+
+  const [seriesHomeWins,
+    setSeriesHomeWins] =
+      useState("");
+
+  const [seriesAwayWins,
+    setSeriesAwayWins] =
+      useState("");
+
+  const [winner, setWinner] =
+    useState("");
+
+  const [players, setPlayers] =
+    useState([
+      "",
+      "",
+      "",
+      "",
+      "",
+    ]);
+
+  // =========================
+  // AUTOCOMPLETE
+  // =========================
+
+  const suggestions =
+    useMemo(() => {
+
+      return players.map(
+        (player) => {
+
+          if (!player) {
+            return [];
+          }
+
+          return allPlayers.filter(
+            (p) =>
+
+              p
+                .toLowerCase()
+
+                .startsWith(
+
+                  player.toLowerCase()
+
+                )
+          );
+
+        }
+      );
+
+    }, [players]);
+
+  // =========================
+  // CHANGE PLAYER
+  // =========================
+
+  const changePlayer =
+    (
+      index: number,
+      value: string
+    ) => {
+
+      const updated =
+        [...players];
+
+      updated[index] =
+        value;
+
+      setPlayers(updated);
+
+    };
+
+  // =========================
+  // SELECT PLAYER
+  // =========================
+
+  const selectPlayer =
+    (
+      index: number,
+      playerName: string
+    ) => {
+
+      const updated =
+        [...players];
+
+      updated[index] =
+        playerName;
+
+      setPlayers(updated);
+
+    };
+
+  // =========================
+  // SAVE PREDICTION
+  // =========================
+
+  const savePrediction =
+    async () => {
+
+      console.log(
+        "SAVE FUNCTION WORKS"
+      );
+
+      try {
+
+        // =========================
+        // CHECK EXISTING
+        // =========================
+
+        const existing =
+          await getDocs(
+
+            query(
+
+              collection(
+                db,
+                "predictions"
+              ),
+
+              where(
+                "player",
+                "==",
+                name
+              )
+
+            )
+
+          );
+
+        // DOUBLE PREDICTION
+        if (!existing.empty) {
+
+          alert(
+            "Tu as déjà une prédiction"
+          );
+
+          return;
+
+        }
+
+        console.log(
+          "BEFORE ADDDOC"
+        );
+
+        // =========================
+        // SAVE FIREBASE
+        // =========================
+
+        await addDoc(
+
+          collection(
+            db,
+            "predictions"
+          ),
+
+          {
+
+            player:
+              String(name),
+
+            match:
+              "buf-mtl",
+
+            homeTeam:
+              "MTL",
+
+            awayTeam:
+              "BUF",
+
+            homeScore:
+              Number(
+                homeScore
+              ),
+
+            awayScore:
+              Number(
+                awayScore
+              ),
+
+            seriesHomeWins:
+              Number(
+                seriesHomeWins
+              ),
+
+            seriesAwayWins:
+              Number(
+                seriesAwayWins
+              ),
+
+            winner:
+              String(
+                winner
+              ),
+
+            players:
+              [...players],
+
+            points: 0,
+
+            createdAt:
+              Date.now(),
+
+          }
+
+        );
+
+        console.log(
+          "FIREBASE SAVE OK"
+        );
+
+        alert(
+          "Prédiction enregistrée !"
+        );
+
+      } catch (error) {
+
+        console.error(
+          "FIREBASE ERROR:",
+          error
+        );
+
+        alert(
+          "Erreur Firebase"
+        );
+
+      }
+
+    };
+
+  return (
+
+    <main
+      className="min-h-screen bg-cover bg-center bg-fixed text-white"
+      style={{
+        backgroundImage:
+          "url('/LNH.png')",
+      }}
+    >
+
+      <div className="min-h-screen bg-black/55">
+
+        {/* NAVBAR */}
+        <div className="w-full bg-black/80 border-b border-white/10 px-8 py-5 flex items-center justify-between">
+
+          <h1 className="text-3xl font-bold text-red-500">
+            Hockey Pool
+          </h1>
+
+          <div className="flex gap-8 text-xl font-semibold">
+
+            <a href="/pool">
+              Accueil
+            </a>
+
+            <a href="/create-pool">
+              Créer Pool
+            </a>
+
+            <a href="/join-pool">
+              Rejoindre
+            </a>
+
+          </div>
+
+        </div>
+
+        {/* PAGE */}
+        <div className="flex justify-center pt-16">
+
+          <div className="bg-black/80 rounded-3xl p-8 w-[520px] border border-white/10">
+
+            <h1 className="text-6xl font-bold mb-8 text-center">
+              Faire une prédiction 🏒
+            </h1>
+
+            {/* NOM */}
+            <input
+              value={name}
+              onChange={(e) =>
+                setName(
+                  e.target.value
+                )
+              }
+              placeholder="Ton nom"
+              className="w-full bg-zinc-800 rounded-xl px-4 py-4 mb-4 text-xl"
+            />
+
+            {/* SCORE */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+
+              <input
+                value={homeScore}
+                onChange={(e) =>
+                  setHomeScore(
+                    e.target.value
+                  )
+                }
+                placeholder="Score MTL"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
+              />
+
+              <input
+                value={awayScore}
+                onChange={(e) =>
+                  setAwayScore(
+                    e.target.value
+                  )
+                }
+                placeholder="Score BUF"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
+              />
+
+            </div>
+
+            {/* SERIE */}
+            <div className="grid grid-cols-2 gap-4 mb-4">
+
+              <input
+                value={seriesHomeWins}
+                onChange={(e) =>
+                  setSeriesHomeWins(
+                    e.target.value
+                  )
+                }
+                placeholder="Série MTL"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
+              />
+
+              <input
+                value={seriesAwayWins}
+                onChange={(e) =>
+                  setSeriesAwayWins(
+                    e.target.value
+                  )
+                }
+                placeholder="Série BUF"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
+              />
+
+            </div>
+
+            {/* WINNER */}
+            <input
+              value={winner}
+              onChange={(e) =>
+                setWinner(
+                  e.target.value
+                )
+              }
+              placeholder="Équipe gagnante"
+              className="w-full bg-zinc-800 rounded-xl px-4 py-4 mb-4 text-xl"
+            />
+
+            {/* JOUEURS */}
+            {players.map(
+              (
+                player,
+                index
+              ) => (
+
+                <div
+                  key={index}
+                  className="relative mb-4"
+                >
+
+                  <input
+                    value={player}
+                    onChange={(e) =>
+
+                      changePlayer(
+                        index,
+                        e.target.value
+                      )
+
+                    }
+                    placeholder={`Joueur ${index + 1}`}
+                    className="w-full bg-zinc-800 rounded-xl px-4 py-4 text-xl"
+                  />
+
+                  {/* AUTOCOMPLETE */}
+                  {player &&
+                    suggestions[
+                      index
+                    ]?.length > 0 && (
+
+                    <div className="absolute z-50 w-full bg-black border border-white/10 rounded-xl mt-1 overflow-hidden">
+
+                      {suggestions[
+                        index
+                      ]
+
+                        .slice(0, 5)
+
+                        .map(
+                          (
+                            suggestion,
+                            i
+                          ) => (
+
+                            <div
+                              key={i}
+                              onClick={() =>
+
+                                selectPlayer(
+                                  index,
+                                  suggestion
+                                )
+
+                              }
+                              className="px-4 py-3 hover:bg-red-600 cursor-pointer"
+                            >
+
+                              {suggestion}
+
+                            </div>
+
+                          )
+                        )}
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              )
+            )}
+
+            {/* SAVE */}
+            <button
+              onClick={
+                savePrediction
+              }
+              className="w-full bg-red-600 hover:bg-red-700 rounded-xl py-4 text-2xl font-bold mt-4"
+            >
+
+              Enregistrer la prédiction
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </main>
+
+  );
+
+}
