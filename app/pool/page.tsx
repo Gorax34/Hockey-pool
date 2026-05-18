@@ -13,16 +13,16 @@ export default function PoolPage() {
   const [loading, setLoading] =
     useState(true);
 
+  // =========================
+  // LOAD NHL GAMES
+  // =========================
+
   useEffect(() => {
 
     const loadGames =
       async () => {
 
         try {
-
-          // =========================
-          // NHL API
-          // =========================
 
           const response =
             await fetch(
@@ -38,13 +38,32 @@ export default function PoolPage() {
           );
 
           // =========================
-          // TODAY GAMES
+          // GET ALL GAMES
           // =========================
 
-          const todayGames =
-            data.gameWeek[0].games;
+          let allGames: any[] = [];
 
-          setGames(todayGames);
+          data.gameWeek?.forEach(
+            (day: any) => {
+
+              if (day.games) {
+
+                allGames = [
+                  ...allGames,
+                  ...day.games,
+                ];
+
+              }
+
+            }
+          );
+
+          console.log(
+            "ALL GAMES:",
+            allGames
+          );
+
+          setGames(allGames);
 
         } catch (error) {
 
@@ -94,6 +113,18 @@ export default function PoolPage() {
 
         )}
 
+        {/* NO GAMES */}
+
+        {!loading && games.length === 0 && (
+
+          <div className="text-3xl text-red-400">
+
+            Aucun match trouvé.
+
+          </div>
+
+        )}
+
         {/* GAMES */}
 
         <div className="space-y-6 max-w-[700px]">
@@ -106,7 +137,7 @@ export default function PoolPage() {
 
               <div
                 key={index}
-                className="bg-black/80 border border-white/10 rounded-3xl p-6"
+                className="bg-black/80 border border-white/10 rounded-3xl p-6 backdrop-blur-sm"
               >
 
                 {/* HEADER */}
@@ -118,13 +149,17 @@ export default function PoolPage() {
                     <div className="text-4xl font-bold">
 
                       {
-                        game.awayTeam.abbrev
+                        game.awayTeam?.abbrev?.default
+                        ||
+                        game.awayTeam?.abbrev
                       }
 
                       {" vs "}
 
                       {
-                        game.homeTeam.abbrev
+                        game.homeTeam?.abbrev?.default
+                        ||
+                        game.homeTeam?.abbrev
                       }
 
                     </div>
@@ -135,8 +170,10 @@ export default function PoolPage() {
 
                         game.gameState === "OFF"
                           ? "FINAL"
+
                           : game.gameState === "LIVE"
                           ? "LIVE"
+
                           : "Scheduled"
 
                       }
@@ -150,13 +187,13 @@ export default function PoolPage() {
                   <div className="text-right text-yellow-400 font-bold text-5xl">
 
                     {
-                      game.awayTeam.score ?? 0
+                      game.awayTeam?.score ?? 0
                     }
 
                     {" - "}
 
                     {
-                      game.homeTeam.score ?? 0
+                      game.homeTeam?.score ?? 0
                     }
 
                   </div>
