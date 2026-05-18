@@ -318,30 +318,7 @@ export default function PredictPage() {
 
       <div className="min-h-screen bg-black/55">
 
-        {/* NAVBAR */}
-        <div className="w-full bg-black/80 border-b border-white/10 px-8 py-5 flex items-center justify-between">
-
-          <h1 className="text-3xl font-bold text-red-500">
-            Hockey Pool
-          </h1>
-
-          <div className="flex gap-8 text-xl font-semibold">
-
-            <a href="/pool">
-              Accueil
-            </a>
-
-            <a href="/create-pool">
-              Créer Pool
-            </a>
-
-            <a href="/join-pool">
-              Rejoindre
-            </a>
-
-          </div>
-
-        </div>
+        
 
         {/* PAGE */}
         <div className="flex justify-center pt-16">
