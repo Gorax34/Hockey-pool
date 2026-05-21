@@ -25,44 +25,72 @@ import {
 
 const allPlayers = [
 
-  // MTL
+  // =========================
+  // CANADIENS
+  // =========================
+
+  "Slafkovsky",
   "Suzuki",
   "Caufield",
-  "Slafkovsky",
-  "Hutson",
-  "Matheson",
-  "Demidov",
-  "Evans",
-  "Newhook",
-  "Dach",
-  "Anderson",
-  "Gallagher",
-  "Armia",
-  "Roy",
-  "Heineman",
-  "Xhekaj",
-  "Savard",
-  "Guhle",
-  "Struble",
-  "Primeau",
-  "Montembeault",
 
-  // BUF
-  "Thompson",
-  "Tuch",
-  "Peterka",
-  "Cozens",
-  "Quinn",
-  "Benson",
-  "Dahlin",
-  "Power",
-  "Byram",
-  "Kulich",
-  "Greenway",
-  "Krebs",
-  "Samuelsson",
-  "Jokiharju",
-  "Luukkonen",
+  "Newhook",
+  "Kapanen",
+  "Demidov",
+
+  "Anderson",
+  "Dach",
+  "Bolduc",
+
+  "Florian Xhekaj",
+  "Evans",
+  "Gallagher",
+
+  "Veleno",
+
+  "Matheson",
+  "Hutson",
+
+  "Guhle",
+  "Dobson",
+
+  "Arber Xhekaj",
+  "Carrier",
+
+  "Struble",
+
+  "Montembeault",
+  "Dobes",
+
+  // =========================
+  // HURRICANES
+  // =========================
+
+  "Svechnikov",
+  "Aho",
+  "Jarvis",
+
+  "Taylor Hall",
+  "Stankoven",
+  "Jackson Blake",
+
+  "Eric Robinson",
+  "Jankowski",
+  "Jordan Staal",
+
+  "Martinook",
+  "Deslauriers",
+
+  "Slavin",
+  "Chatfield",
+
+  "K'Andre Miller",
+  "Shawn Walker",
+
+  "Nikishin",
+  "Gostisbehere",
+
+  "Frederik Andersen",
+  "Kochetkov",
 
 ];
 
@@ -88,13 +116,15 @@ export default function PredictPage() {
   const [awayScore, setAwayScore] =
     useState("");
 
-  const [seriesHomeWins,
-    setSeriesHomeWins] =
-      useState("");
+  const [
+    seriesHomeWins,
+    setSeriesHomeWins
+  ] = useState("");
 
-  const [seriesAwayWins,
-    setSeriesAwayWins] =
-      useState("");
+  const [
+    seriesAwayWins,
+    setSeriesAwayWins
+  ] = useState("");
 
   const [winner, setWinner] =
     useState("");
@@ -212,14 +242,17 @@ export default function PredictPage() {
               where(
                 "gameId",
                 "==",
-                params.match
+                String(params.match)
               )
 
             )
 
           );
 
+        // =========================
         // DOUBLE PREDICTION
+        // =========================
+
         if (!existing.empty) {
 
           alert(
@@ -235,42 +268,62 @@ export default function PredictPage() {
         // =========================
 
         await addDoc(
-  collection(
-    db,
-    "predictions"
-  ),
 
-  {
+          collection(
+            db,
+            "predictions"
+          ),
 
-    player:
-      String(name),
+          {
 
-    gameId:
-      String(params.match),
+            player:
+              String(name),
 
-    homeTeam:
-      "MTL",
+            gameId:
+              String(params.match),
 
-    awayTeam:
-      "BUF",
+            homeTeam:
+              "MTL",
 
-    homeScore:
-      Number(homeScore),
+            awayTeam:
+              "CAR",
 
-    awayScore:
-      Number(awayScore),
+            homeScore:
+              Number(
+                homeScore
+              ),
 
-    winner:
-      winner,
+            awayScore:
+              Number(
+                awayScore
+              ),
 
-    players:
-      selectedPlayers,
+            seriesHomeWins:
+              Number(
+                seriesHomeWins
+              ),
 
-    points:
-      0,
+            seriesAwayWins:
+              Number(
+                seriesAwayWins
+              ),
 
-  }
-);
+            winner:
+              String(
+                winner
+              ),
+
+            players:
+              [...players],
+
+            points: 0,
+
+            createdAt:
+              Date.now(),
+
+          }
+
+        );
 
         alert(
           "Prédiction enregistrée !"
@@ -304,15 +357,19 @@ export default function PredictPage() {
       <div className="min-h-screen bg-black/55">
 
         {/* PAGE */}
+
         <div className="flex justify-center pt-16">
 
           <div className="bg-black/80 rounded-3xl p-8 w-[520px] border border-white/10">
 
             <h1 className="text-6xl font-bold mb-8 text-center">
+
               Faire une prédiction 🏒
+
             </h1>
 
             {/* NOM */}
+
             <input
               value={name}
               onChange={(e) =>
@@ -325,6 +382,7 @@ export default function PredictPage() {
             />
 
             {/* SCORE */}
+
             <div className="grid grid-cols-2 gap-4 mb-4">
 
               <input
@@ -345,13 +403,14 @@ export default function PredictPage() {
                     e.target.value
                   )
                 }
-                placeholder="Score BUF"
+                placeholder="Score CAR"
                 className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
               />
 
             </div>
 
             {/* SERIE */}
+
             <div className="grid grid-cols-2 gap-4 mb-4">
 
               <input
@@ -372,13 +431,14 @@ export default function PredictPage() {
                     e.target.value
                   )
                 }
-                placeholder="Série BUF"
+                placeholder="Série CAR"
                 className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
               />
 
             </div>
 
             {/* WINNER */}
+
             <input
               value={winner}
               onChange={(e) =>
@@ -391,6 +451,7 @@ export default function PredictPage() {
             />
 
             {/* JOUEURS */}
+
             {players.map(
               (
                 player,
@@ -417,6 +478,7 @@ export default function PredictPage() {
                   />
 
                   {/* AUTOCOMPLETE */}
+
                   {player &&
                     suggestions[
                       index
@@ -466,6 +528,7 @@ export default function PredictPage() {
             )}
 
             {/* SAVE */}
+
             <button
               onClick={
                 savePrediction

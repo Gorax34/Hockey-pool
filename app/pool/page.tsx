@@ -11,85 +11,85 @@ export default function PoolPage() {
     {
       gameId: "game-1",
       match: "Match 1",
-      date: "mer. 6 mai",
+      date: "mar. 20 mai",
       homeTeam: "Canadiens",
-      awayTeam: "Sabres",
-      homeScore: 2,
-      awayScore: 4,
-      status: "Final",
-      serie: "BUF mène 1-0",
+      awayTeam: "Hurricanes",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-2",
       match: "Match 2",
-      date: "ven. 8 mai",
+      date: "jeu. 22 mai",
       homeTeam: "Canadiens",
-      awayTeam: "Sabres",
-      homeScore: 5,
-      awayScore: 1,
-      status: "Final",
-      serie: "Série égale 1-1",
+      awayTeam: "Hurricanes",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-3",
       match: "Match 3",
-      date: "dim. 10 mai",
-      homeTeam: "Sabres",
+      date: "sam. 24 mai",
+      homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
-      homeScore: 2,
-      awayScore: 6,
-      status: "Final",
-      serie: "MTL mène 2-1",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-4",
       match: "Match 4",
-      date: "mar. 12 mai",
-      homeTeam: "Sabres",
+      date: "lun. 26 mai",
+      homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
-      homeScore: 3,
-      awayScore: 2,
-      status: "Final",
-      serie: "Série égale 2-2",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-5",
       match: "Match 5",
-      date: "jeu. 14 mai",
+      date: "mer. 28 mai",
       homeTeam: "Canadiens",
-      awayTeam: "Sabres",
-      homeScore: 6,
-      awayScore: 3,
-      status: "Final",
-      serie: "MTL mène 3-2",
+      awayTeam: "Hurricanes",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-6",
       match: "Match 6",
-      date: "sam. 16 mai",
-      homeTeam: "Sabres",
+      date: "ven. 30 mai",
+      homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
-      homeScore: 8,
-      awayScore: 3,
-      status: "Final",
-      serie: "Série égale 3-3",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
     {
       gameId: "game-7",
       match: "Match 7",
-      date: "lun. 18 mai",
+      date: "dim. 1 juin",
       homeTeam: "Canadiens",
-      awayTeam: "Sabres",
-      homeScore: "-",
-      awayScore: "-",
-      status: "19h30",
-      serie: "Match ultime",
+      awayTeam: "Hurricanes",
+      homeScore: 0,
+      awayScore: 0,
+      status: "À venir",
+      serie: "0-0",
     },
 
   ];
@@ -110,7 +110,7 @@ export default function PoolPage() {
 
         <h1 className="text-7xl font-bold mb-10">
 
-          Matchs NHL 🏒
+          Canadiens vs Hurricanes 🏒
 
         </h1>
 
@@ -186,6 +186,10 @@ export default function PoolPage() {
                 {/* SERIE */}
 
                 <div className="mt-4 text-green-400 text-2xl font-bold">
+
+                  Série :
+
+                  {" "}
 
                   {game.serie}
 
