@@ -91,7 +91,7 @@ export default function PredictionsPage() {
 
             ? "MTL"
 
-            : "BUF";
+            : "CAR";
 
         const realHomeScore =
           Number(
@@ -109,10 +109,27 @@ export default function PredictionsPage() {
 
         const goodPlayers = [
 
+          // =========================
+          // MTL
+          // =========================
+
+          "Suzuki",
+          "Caufield",
           "Slafkovsky",
+          "Demidov",
           "Hutson",
-          "Evans",
-          "Roy",
+          "Gallagher",
+
+          // =========================
+          // CAR
+          // =========================
+
+          "Aho",
+          "Svechnikov",
+          "Jarvis",
+          "Stankoven",
+          "Slavin",
+          "Gostisbehere",
 
         ];
 
@@ -277,10 +294,13 @@ export default function PredictionsPage() {
       <div className="min-h-screen bg-black/60">
 
         {/* CONTENT */}
+
         <div className="p-8">
 
           <h1 className="text-6xl font-bold mb-8">
+
             Prédictions 🏒
+
           </h1>
 
           <div className="space-y-6">
@@ -297,6 +317,7 @@ export default function PredictionsPage() {
                 >
 
                   {/* HEADER */}
+
                   <div className="flex items-center justify-between mb-4">
 
                     <h2 className="text-3xl font-bold">
@@ -324,6 +345,7 @@ export default function PredictionsPage() {
                   </div>
 
                   {/* MATCH */}
+
                   <div className="text-2xl mb-4">
 
                     {
@@ -339,17 +361,21 @@ export default function PredictionsPage() {
                   </div>
 
                   {/* WINNER */}
+
                   <div className="text-green-400 text-2xl font-bold mb-4">
 
-                    Gagnant : {
+                    Gagnant :
 
+                    {" "}
+
+                    {
                       prediction.winner
-
                     }
 
                   </div>
 
                   {/* PLAYERS */}
+
                   <div className="flex flex-wrap gap-2 mb-6">
 
                     {prediction.players?.map(
@@ -375,6 +401,7 @@ export default function PredictionsPage() {
                   </div>
 
                   {/* POINTS */}
+
                   <div className="flex items-center justify-between">
 
                     <div className="text-2xl">
