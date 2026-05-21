@@ -302,11 +302,11 @@ export default function PredictPage() {
         );
 
         // =========================
-        // REDIRECT
+        // REDIRECT POOL
         // =========================
 
         window.location.href =
-          `/predictions/${params.match}`;
+          "/pool";
 
       } catch (error) {
 

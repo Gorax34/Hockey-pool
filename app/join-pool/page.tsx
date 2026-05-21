@@ -73,13 +73,7 @@ export default function JoinPool() {
           className="w-full p-3 mb-4 rounded bg-zinc-700"
         />
 
-        <input
-          type="text"
-          placeholder="Ton nom"
-          value={playerName}
-          onChange={(e) => setPlayerName(e.target.value)}
-          className="w-full p-3 mb-4 rounded bg-zinc-700"
-        />
+        
 
         <button
           onClick={joinPool}
