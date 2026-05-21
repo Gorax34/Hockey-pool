@@ -301,6 +301,13 @@ export default function PredictPage() {
           "Prédiction enregistrée !"
         );
 
+        // =========================
+        // REDIRECT
+        // =========================
+
+        window.location.href =
+          `/predictions/${params.match}`;
+
       } catch (error) {
 
         console.error(
