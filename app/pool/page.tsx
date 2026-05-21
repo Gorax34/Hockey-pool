@@ -11,7 +11,7 @@ export default function PoolPage() {
     {
       gameId: "game-1",
       match: "Match 1",
-      date: "mar. 20 mai",
+      date: "Jeu. 21 mai",
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
       homeScore: 0,
@@ -23,7 +23,7 @@ export default function PoolPage() {
     {
       gameId: "game-2",
       match: "Match 2",
-      date: "jeu. 22 mai",
+      date: "Sam. 23 mai",
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
       homeScore: 0,
@@ -35,7 +35,7 @@ export default function PoolPage() {
     {
       gameId: "game-3",
       match: "Match 3",
-      date: "sam. 24 mai",
+      date: "Lun. 25 mai",
       homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
       homeScore: 0,
@@ -47,7 +47,7 @@ export default function PoolPage() {
     {
       gameId: "game-4",
       match: "Match 4",
-      date: "lun. 26 mai",
+      date: "Mer. 27 mai",
       homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
       homeScore: 0,
@@ -59,7 +59,7 @@ export default function PoolPage() {
     {
       gameId: "game-5",
       match: "Match 5",
-      date: "mer. 28 mai",
+      date: "Ven. 29 mai",
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
       homeScore: 0,
@@ -71,7 +71,7 @@ export default function PoolPage() {
     {
       gameId: "game-6",
       match: "Match 6",
-      date: "ven. 30 mai",
+      date: "Dim. 31 mai",
       homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
       homeScore: 0,
@@ -83,7 +83,7 @@ export default function PoolPage() {
     {
       gameId: "game-7",
       match: "Match 7",
-      date: "dim. 1 juin",
+      date: "Mar. 2 juin",
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
       homeScore: 0,

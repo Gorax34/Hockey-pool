@@ -1,59 +1,103 @@
 "use client";
 
-import { useState } from "react";
+import {
+  useState,
+  useMemo,
+} from "react";
 
 import {
   addDoc,
   collection,
+  getDocs,
+  query,
+  where,
 } from "firebase/firestore";
 
 import { db } from "@/app/firebase";
 
+import {
+  useParams,
+} from "next/navigation";
+
+// =========================
+// JOUEURS NHL
+// =========================
+
+const allPlayers = [
+
+  // =========================
+  // CANADIENS
+  // =========================
+
+  "Slafkovsky",
+  "Suzuki",
+  "Caufield",
+
+  "Newhook",
+  "Kapanen",
+  "Demidov",
+
+  "Anderson",
+  "Dach",
+  "Bolduc",
+
+  "Florian Xhekaj",
+  "Evans",
+  "Gallagher",
+
+  "Veleno",
+
+  "Matheson",
+  "Hutson",
+
+  "Guhle",
+  "Dobson",
+
+  "Arber Xhekaj",
+  "Carrier",
+
+  "Struble",
+
+  "Montembeault",
+  "Dobes",
+
+  // =========================
+  // HURRICANES
+  // =========================
+
+  "Svechnikov",
+  "Aho",
+  "Jarvis",
+
+  "Taylor Hall",
+  "Stankoven",
+  "Jackson Blake",
+
+  "Eric Robinson",
+  "Jankowski",
+  "Jordan Staal",
+
+  "Martinook",
+  "Deslauriers",
+
+  "Slavin",
+  "Chatfield",
+
+  "K'Andre Miller",
+  "Shawn Walker",
+
+  "Nikishin",
+  "Gostisbehere",
+
+  "Frederik Andersen",
+  "Kochetkov",
+
+];
+
 export default function PredictPage() {
 
-  // =========================
-  // LISTE JOUEURS
-  // =========================
-
-  const allPlayers = [
-
-    // MTL
-    "Suzuki",
-    "Caufield",
-    "Slafkovsky",
-    "Hutson",
-    "Matheson",
-    "Demidov",
-    "Evans",
-    "Newhook",
-    "Dach",
-    "Anderson",
-    "Gallagher",
-    "Armia",
-    "Roy",
-    "Heineman",
-    "Xhekaj",
-    "Savard",
-    "Guhle",
-    "Struble",
-
-    // BUF
-    "Thompson",
-    "Tuch",
-    "Peterka",
-    "Cozens",
-    "Quinn",
-    "Byram",
-    "Dahlin",
-    "Power",
-    "Greenway",
-    "McLeod",
-    "Benson",
-    "Kulich",
-    "Skinner",
-    "Samuelsson",
-
-  ];
+  const params =
+    useParams();
 
   // =========================
   // STATES
@@ -81,26 +125,79 @@ export default function PredictPage() {
     ]);
 
   // =========================
-  // UPDATE JOUEURS
+  // AUTOCOMPLETE
   // =========================
 
-  const updatePlayer = (
-    index: number,
-    value: string
-  ) => {
+  const suggestions =
+    useMemo(() => {
 
-    const updated =
-      [...players];
+      return players.map(
+        (player) => {
 
-    updated[index] =
-      value;
+          if (!player) {
+            return [];
+          }
 
-    setPlayers(updated);
+          return allPlayers.filter(
+            (p) =>
 
-  };
+              p
+                .toLowerCase()
+
+                .includes(
+
+                  player.toLowerCase()
+
+                )
+          );
+
+        }
+      );
+
+    }, [players]);
 
   // =========================
-  // SAVE FIREBASE
+  // CHANGE PLAYER
+  // =========================
+
+  const changePlayer =
+    (
+      index: number,
+      value: string
+    ) => {
+
+      const updated =
+        [...players];
+
+      updated[index] =
+        value;
+
+      setPlayers(updated);
+
+    };
+
+  // =========================
+  // SELECT PLAYER
+  // =========================
+
+  const selectPlayer =
+    (
+      index: number,
+      playerName: string
+    ) => {
+
+      const updated =
+        [...players];
+
+      updated[index] =
+        playerName;
+
+      setPlayers(updated);
+
+    };
+
+  // =========================
+  // SAVE PREDICTION
   // =========================
 
   const savePrediction =
@@ -108,51 +205,96 @@ export default function PredictPage() {
 
       try {
 
-        const prediction = {
+        // =========================
+        // CHECK EXISTING
+        // =========================
 
-          player: name,
+        const existing =
+          await getDocs(
 
-          homeTeam: "MTL",
+            query(
 
-          awayTeam: "BUF",
+              collection(
+                db,
+                "predictions"
+              ),
 
-          homeScore:
-            Number(homeScore),
+              where(
+                "player",
+                "==",
+                name
+              ),
 
-          awayScore:
-            Number(awayScore),
+              where(
+                "gameId",
+                "==",
+                String(params.match)
+              )
 
-          winner,
-
-          players,
-
-          points: 0,
-
-          createdAt:
-            Date.now(),
-
-        };
-
-        console.log(
-          "SAVE DATA:",
-          prediction
-        );
-
-        const ref =
-          await addDoc(
-
-            collection(
-              db,
-              "predictions"
-            ),
-
-            prediction
+            )
 
           );
 
-        console.log(
-          "DOCUMENT CREATED:",
-          ref.id
+        if (!existing.empty) {
+
+          alert(
+            "Tu as déjà une prédiction pour ce match"
+          );
+
+          return;
+
+        }
+
+        // =========================
+        // SAVE FIREBASE
+        // =========================
+
+        await addDoc(
+
+          collection(
+            db,
+            "predictions"
+          ),
+
+          {
+
+            player:
+              String(name),
+
+            gameId:
+              String(params.match),
+
+            homeTeam:
+              "MTL",
+
+            awayTeam:
+              "CAR",
+
+            homeScore:
+              Number(
+                homeScore
+              ),
+
+            awayScore:
+              Number(
+                awayScore
+              ),
+
+            winner:
+              String(
+                winner
+              ),
+
+            players:
+              [...players],
+
+            points: 0,
+
+            createdAt:
+              Date.now(),
+
+          }
+
         );
 
         alert(
@@ -184,174 +326,161 @@ export default function PredictPage() {
       }}
     >
 
-      <div className="min-h-screen bg-black/60">
+      <div className="min-h-screen bg-black/55">
 
-        {/* NAVBAR */}
-        <div className="w-full bg-black/80 border-b border-white/10 px-8 py-5 flex items-center justify-between">
+        {/* PAGE */}
 
-          <h1 className="text-3xl font-bold text-red-500">
-            Hockey Pool
-          </h1>
+        <div className="flex justify-center pt-16 pb-16">
 
-          <div className="flex gap-8 text-xl font-semibold">
+          <div className="bg-black/80 rounded-3xl p-8 w-[520px] border border-white/10">
 
-            <a href="/dashboard">
-              Accueil
-            </a>
+            <h1 className="text-6xl font-bold mb-8 text-center">
 
-            <a href="/create-pool">
-              Créer Pool
-            </a>
-
-            <a href="/join-pool">
-              Rejoindre
-            </a>
-
-          </div>
-
-        </div>
-
-        {/* CONTENU */}
-        <div className="flex justify-center pt-16">
-
-          <div className="w-[520px] bg-black/80 rounded-3xl p-8 border border-white/10">
-
-            <h1 className="text-5xl font-bold text-center mb-10">
               Faire une prédiction 🏒
+
             </h1>
 
-            <div className="space-y-4">
+            {/* NOM */}
 
-              {/* NOM */}
+            <input
+              value={name}
+              onChange={(e) =>
+                setName(
+                  e.target.value
+                )
+              }
+              placeholder="Ton nom"
+              className="w-full bg-zinc-800 rounded-xl px-4 py-4 mb-4 text-xl"
+            />
+
+            {/* SCORE */}
+
+            <div className="grid grid-cols-2 gap-4 mb-4">
+
               <input
-                type="text"
-                placeholder="Ton nom"
-                value={name}
+                value={homeScore}
                 onChange={(e) =>
-                  setName(
+                  setHomeScore(
                     e.target.value
                   )
                 }
-                className="w-full p-4 rounded-xl bg-zinc-800 text-white"
+                placeholder="Score MTL"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
               />
 
-              {/* ÉQUIPES */}
-              <div className="grid grid-cols-2 gap-4">
-
-                <input
-                  type="text"
-                  value="MTL"
-                  readOnly
-                  className="p-4 rounded-xl bg-zinc-800 text-white"
-                />
-
-                <input
-                  type="text"
-                  value="BUF"
-                  readOnly
-                  className="p-4 rounded-xl bg-zinc-800 text-white"
-                />
-
-              </div>
-
-              {/* SCORES */}
-              <div className="grid grid-cols-2 gap-4">
-
-                <input
-                  type="number"
-                  placeholder="Score maison"
-                  value={homeScore}
-                  onChange={(e) =>
-                    setHomeScore(
-                      e.target.value
-                    )
-                  }
-                  className="p-4 rounded-xl bg-zinc-800 text-white"
-                />
-
-                <input
-                  type="number"
-                  placeholder="Score visiteur"
-                  value={awayScore}
-                  onChange={(e) =>
-                    setAwayScore(
-                      e.target.value
-                    )
-                  }
-                  className="p-4 rounded-xl bg-zinc-800 text-white"
-                />
-
-              </div>
-
-              {/* GAGNANT */}
               <input
-                type="text"
-                placeholder="Équipe gagnante"
-                value={winner}
+                value={awayScore}
                 onChange={(e) =>
-                  setWinner(
+                  setAwayScore(
                     e.target.value
                   )
                 }
-                className="w-full p-4 rounded-xl bg-zinc-800 text-white"
+                placeholder="Score CAR"
+                className="bg-zinc-800 rounded-xl px-4 py-4 text-xl"
               />
 
-              {/* JOUEURS */}
-              {players.map(
-                (
-                  player,
-                  index
-                ) => (
+            </div>
+
+            {/* WINNER */}
+
+            <input
+              value={winner}
+              onChange={(e) =>
+                setWinner(
+                  e.target.value
+                )
+              }
+              placeholder="Équipe gagnante"
+              className="w-full bg-zinc-800 rounded-xl px-4 py-4 mb-4 text-xl"
+            />
+
+            {/* JOUEURS */}
+
+            {players.map(
+              (
+                player,
+                index
+              ) => (
+
+                <div
+                  key={index}
+                  className="relative mb-4"
+                >
 
                   <input
-                    key={index}
-                    list="players-list"
-                    placeholder={`Joueur ${index + 1}`}
                     value={player}
                     onChange={(e) =>
 
-                      updatePlayer(
+                      changePlayer(
                         index,
                         e.target.value
                       )
 
                     }
-                    className="w-full p-4 rounded-xl bg-zinc-800 text-white"
+                    placeholder={`Joueur ${index + 1}`}
+                    className="w-full bg-zinc-800 rounded-xl px-4 py-4 text-xl"
                   />
 
-                )
-              )}
+                  {/* AUTOCOMPLETE */}
 
-              {/* DATALIST */}
-              <datalist id="players-list">
+                  {player &&
+                   player.length > 0 &&
+                   suggestions[index]?.length > 0 &&
+                   suggestions[index][0] !== player && (
 
-                {allPlayers.map(
-                  (
-                    player,
-                    index
-                  ) => (
+                    <div className="absolute z-50 w-full bg-black border border-white/10 rounded-xl mt-1 overflow-hidden">
 
-                    <option
-                      key={index}
-                      value={player}
-                    />
+                      {suggestions[index]
 
-                  )
-                )}
+                        .slice(0, 5)
 
-              </datalist>
+                        .map(
+                          (
+                            suggestion,
+                            i
+                          ) => (
 
-              {/* BOUTON */}
-              <button
-                onClick={savePrediction}
-                className="w-full bg-red-600 hover:bg-red-700 transition rounded-xl p-4 text-xl font-bold mt-4"
-              >
+                            <div
+                              key={i}
+                              onClick={() =>
 
-                Enregistrer la prédiction
+                                selectPlayer(
+                                  index,
+                                  suggestion
+                                )
 
-              </button>
+                              }
+                              className="px-4 py-3 hover:bg-red-600 cursor-pointer text-white"
+                            >
 
-            </div>
+                              {suggestion}
+
+                            </div>
+
+                          )
+                        )}
+
+                    </div>
+
+                  )}
+
+                </div>
+
+              )
+            )}
+
+            {/* SAVE */}
+
+            <button
+              onClick={
+                savePrediction
+              }
+              className="w-full bg-red-600 hover:bg-red-700 rounded-xl py-4 text-2xl font-bold mt-4"
+            >
+
+              Enregistrer la prédiction
+
+            </button>
 
           </div>
 
