@@ -42,6 +42,34 @@ export default function PredictionsPage() {
   // =========================
   // LOAD PREDICTIONS
   // =========================
+// =========================
+// NHL IDS
+// =========================
+
+const nhlGameIds: any = {
+
+  "game-1":
+    "2025030311",
+
+  "game-2":
+    "2025030312",
+
+  "game-3":
+    "2025030313",
+
+  "game-4":
+    "2025030314",
+
+  "game-5":
+    "2025030315",
+
+  "game-6":
+    "2025030316",
+
+  "game-7":
+    "2025030317",
+
+};
 
   useEffect(() => {
 
@@ -111,7 +139,7 @@ export default function PredictionsPage() {
 
         const response =
           await fetch(
-            "/api/live-game"
+            `/api/live-game?gameId=${nhlGameIds[match]}`
           );
 
         const data =

@@ -1,6 +1,11 @@
-import { NextResponse } from "next/server";
+import {
+  NextRequest,
+  NextResponse
+} from "next/server";
 
-export async function GET() {
+export async function GET(
+  request: NextRequest
+) {
 
   try {
 
@@ -8,8 +13,13 @@ export async function GET() {
     // NHL GAME ID
     // =========================
 
+    const searchParams =
+      request.nextUrl.searchParams;
+
     const gameId =
-      "2025030311";
+      searchParams.get(
+        "gameId"
+      );
 
     // =========================
     // NHL API
@@ -38,18 +48,125 @@ export async function GET() {
       );
 
     // =========================
+    // MANUAL GOALS
+    // =========================
+
+    const manualGoals: any = {
+
+      "2025030311": [
+
+        {
+          scorer:
+            "Seth Jarvis",
+
+          assists: [
+            "A.Svechnikov",
+            "S.Aho"
+          ],
+        },
+
+        {
+          scorer:
+            "Cole Caufield",
+
+          assists: [
+            "J.Slafkovsky",
+            "N.Suzuki"
+          ],
+        },
+
+        {
+          scorer:
+            "Phillip Danault",
+
+          assists: [
+            "A.Carrier",
+            
+          ],
+        },
+
+        {
+          scorer:
+            "Alexandre Texier",
+
+          assists: [
+            "P.Danault",
+            "K.Guhle"
+          ],
+        },
+      
+        {
+          scorer:
+            "Ivan Demidov",
+
+          assists: [
+            "A.Newhook",
+            "J.Evans"
+          ],
+        },
+
+        {
+          scorer:
+            "Eric Robinson",
+
+          assists: [
+            "W.Carrier",
+            
+          ],
+        },
+
+        {
+          scorer:
+            "Juraj Slafkovsky",
+
+          assists: [
+            "N.Suzuki",
+            "C.Caufield"
+          ],
+        },
+
+        {
+          scorer:
+            "S.Juraj SlafkovskyAho",
+
+          assists: [
+            "N.Suzuki",
+            
+          ],
+        },
+    ],
+
+      "2025030312": [
+
+        {
+          scorer:
+            "Slafkovsky",
+
+          assists: [
+            "Demidov"
+          ],
+        },
+
+      ],
+
+    };
+
+    // =========================
     // FORMAT GOALS
     // =========================
 
     const formattedGoals =
       goals.map(
-        (goal: any) => ({
-
-          // =========================
-          // SCORER
-          // =========================
+        (
+          goal: any,
+          index: number
+        ) => ({
 
           scorer:
+
+            manualGoals?.[
+              gameId || ""
+            ]?.[index]?.scorer ||
 
             goal.details?.scoringPlayerName ||
 
@@ -57,21 +174,19 @@ export async function GET() {
 
             "Buteur",
 
-          // =========================
-          // ASSISTS
-          // =========================
+          assists:
 
-          assists: [
+            manualGoals?.[
+              gameId || ""
+            ]?.[index]?.assists ||
 
-            goal.details?.assist1PlayerName,
+            [
 
-            goal.details?.assist2PlayerName,
+              goal.details?.assist1PlayerName,
 
-          ].filter(Boolean),
+              goal.details?.assist2PlayerName,
 
-          // =========================
-          // SCORE
-          // =========================
+            ].filter(Boolean),
 
           homeScore:
             goal.details?.homeScore,
@@ -79,16 +194,8 @@ export async function GET() {
           awayScore:
             goal.details?.awayScore,
 
-          // =========================
-          // PERIOD
-          // =========================
-
           period:
             goal.periodDescriptor?.number,
-
-          // =========================
-          // TIME
-          // =========================
 
           time:
             goal.timeInPeriod,
