@@ -348,7 +348,7 @@ const nhlGameIds: any = {
 
           {/* LIVE GOALS */}
 
-          <div className="w-[420px] bg-black/80 border border-white/10 rounded-3xl p-6 sticky top-8 overflow-hidden">
+          <div className="w-[450px] bg-black/80 border border-white/10 rounded-3xl p-6 sticky top-8 overflow-hidden">
 
             <h2 className="text-4xl font-bold mb-6">
 
@@ -366,7 +366,7 @@ const nhlGameIds: any = {
 
                   <div
                     key={index}
-                    className="min-w-[320px] bg-zinc-900 rounded-3xl p-5 flex-shrink-0"
+                    className="min-w-[220px] bg-zinc-900 rounded-3xl p-5 flex-shrink-0"
                   >
 
                     {/* SCORER */}
