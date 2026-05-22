@@ -156,8 +156,8 @@ export default function PoolPage() {
       date: "Jeu. 21 mai",
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
-      homeScore: 0,
-      awayScore: 0,
+      homeScore: 4,
+      awayScore: 2,
       status: "En cours",
       serie: "0-0",
     },
@@ -393,7 +393,7 @@ export default function PoolPage() {
               className="w-full bg-red-600 hover:bg-red-700 rounded-2xl py-4 text-2xl font-bold mb-6"
             >
 
-              Fin de série
+              Predire Fin de série
 
             </button>
 
