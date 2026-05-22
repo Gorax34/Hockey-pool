@@ -16,7 +16,7 @@ export default function PoolPage() {
       awayTeam: "Hurricanes",
       homeScore: 0,
       awayScore: 0,
-      status: "À venir",
+      status: "En cours",
       serie: "0-0",
     },
 
