@@ -1,6 +1,148 @@
 "use client";
 
+import {
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  addDoc,
+  collection,
+  getDocs,
+} from "firebase/firestore";
+
+import { db } from "@/app/firebase";
+
 export default function PoolPage() {
+
+  // =========================
+  // SERIES PREDICTIONS
+  // =========================
+
+  const [
+    seriesPredictions,
+    setSeriesPredictions
+  ] = useState<any[]>([]);
+
+  const [
+    seriesTeam,
+    setSeriesTeam
+  ] = useState("");
+
+  const [
+    seriesGames,
+    setSeriesGames
+  ] = useState("");
+
+  const [
+    seriesName,
+    setSeriesName
+  ] = useState("");
+
+  const [
+    showSeriesForm,
+    setShowSeriesForm
+  ] = useState(false);
+
+  // =========================
+  // LOAD SERIES PREDICTIONS
+  // =========================
+
+  const loadSeriesPredictions =
+    async () => {
+
+      const snapshot =
+        await getDocs(
+
+          collection(
+            db,
+            "seriesPredictions"
+          )
+
+        );
+
+      const data =
+        snapshot.docs.map(
+          (doc) => doc.data()
+        );
+
+      setSeriesPredictions(data);
+
+    };
+
+  // =========================
+  // LOAD ON START
+  // =========================
+
+  useEffect(() => {
+
+    loadSeriesPredictions();
+
+  }, []);
+
+  // =========================
+  // VOTE SERIES
+  // =========================
+
+  const voteSeries =
+    async () => {
+
+      if (
+        seriesTeam.trim() === "" ||
+        seriesGames.trim() === "" ||
+        seriesName.trim() === ""
+      ) {
+
+        alert(
+          "Remplis tous les champs"
+        );
+
+        return;
+
+      }
+
+      try {
+
+        await addDoc(
+
+          collection(
+            db,
+            "seriesPredictions"
+          ),
+
+          {
+            name:
+              seriesName,
+
+            prediction:
+              `${seriesTeam.toUpperCase()} en ${seriesGames}`,
+          }
+
+        );
+
+        alert(
+          "Prédiction enregistrée !"
+        );
+
+        setSeriesTeam("");
+        setSeriesGames("");
+        setSeriesName("");
+
+        setShowSeriesForm(false);
+
+        loadSeriesPredictions();
+
+      } catch (error) {
+
+        console.log(error);
+
+        alert(
+          "Erreur Firebase"
+        );
+
+      }
+
+    };
 
   // =========================
   // GAMES
@@ -114,115 +256,234 @@ export default function PoolPage() {
 
         </h1>
 
-        {/* GAMES */}
+        {/* LAYOUT */}
 
-        <div className="space-y-6 max-w-[900px]">
+        <div className="flex gap-8 items-start">
 
-          {games.map(
-            (
-              game,
-              index
-            ) => (
+          {/* GAMES */}
 
-              <div
-                key={index}
-                className="bg-black/80 border border-white/10 rounded-3xl p-6"
-              >
+          <div className="space-y-6 flex-1 max-w-[900px]">
 
-                {/* HEADER */}
+            {games.map(
+              (
+                game,
+                index
+              ) => (
 
-                <div className="flex items-center justify-between">
+                <div
+                  key={index}
+                  className="bg-black/80 border border-white/10 rounded-3xl p-6"
+                >
 
-                  <div>
+                  {/* HEADER */}
 
-                    <div className="text-4xl font-bold">
+                  <div className="flex items-center justify-between">
 
-                      {game.match}
+                    <div>
+
+                      <div className="text-4xl font-bold">
+
+                        {game.match}
+
+                      </div>
+
+                      <div className="text-gray-400 text-xl mt-1">
+
+                        {game.date}
+
+                      </div>
 
                     </div>
 
-                    <div className="text-gray-400 text-xl mt-1">
+                    <div className="text-right">
 
-                      {game.date}
+                      <div className="text-5xl font-bold text-yellow-400">
+
+                        {game.homeScore}
+
+                        {" - "}
+
+                        {game.awayScore}
+
+                      </div>
+
+                      <div className="text-xl text-gray-400 mt-2">
+
+                        {game.status}
+
+                      </div>
 
                     </div>
 
                   </div>
 
-                  <div className="text-right">
+                  {/* TEAMS */}
 
-                    <div className="text-5xl font-bold text-yellow-400">
+                  <div className="mt-6 text-3xl font-semibold">
 
-                      {game.homeScore}
+                    {game.homeTeam}
 
-                      {" - "}
+                    {" VS "}
 
-                      {game.awayScore}
+                    {game.awayTeam}
 
-                    </div>
+                  </div>
 
-                    <div className="text-xl text-gray-400 mt-2">
+                  {/* SERIE */}
 
-                      {game.status}
+                  <div className="mt-4 text-green-400 text-2xl font-bold">
 
-                    </div>
+                    Série :
+
+                    {" "}
+
+                    {game.serie}
+
+                  </div>
+
+                  {/* BUTTONS */}
+
+                  <div className="flex gap-4 mt-8">
+
+                    <a
+                      href={`/predict/${game.gameId}`}
+                      className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl text-2xl font-bold"
+                    >
+
+                      Prédire
+
+                    </a>
+
+                    <a
+                      href={`/predictions/${game.gameId}`}
+                      className="bg-zinc-700 hover:bg-zinc-600 px-8 py-4 rounded-2xl text-2xl font-bold"
+                    >
+
+                      Voir
+
+                    </a>
 
                   </div>
 
                 </div>
 
-                {/* TEAMS */}
+              )
+            )}
 
-                <div className="mt-6 text-3xl font-semibold">
+          </div>
 
-                  {game.homeTeam}
+          {/* FIN DE SERIE */}
 
-                  {" VS "}
+          <div className="w-[380px] bg-black/80 border border-white/10 rounded-3xl p-6 sticky top-8">
 
-                  {game.awayTeam}
+            <h2 className="text-4xl font-bold mb-6">
 
-                </div>
+              🏆 Fin de série
 
-                {/* SERIE */}
+            </h2>
 
-                <div className="mt-4 text-green-400 text-2xl font-bold">
+            {/* OPEN FORM */}
 
-                  Série :
+            <button
+              onClick={() =>
+                setShowSeriesForm(
+                  !showSeriesForm
+                )
+              }
+              className="w-full bg-red-600 hover:bg-red-700 rounded-2xl py-4 text-2xl font-bold mb-6"
+            >
 
-                  {" "}
+              Fin de série
 
-                  {game.serie}
+            </button>
 
-                </div>
+            {/* FORM */}
 
-                {/* BUTTONS */}
+            {showSeriesForm && (
 
-                <div className="flex gap-4 mt-8">
+              <div className="space-y-4 mb-8">
 
-                  <a
-                    href={`/predict/${game.gameId}`}
-                    className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-2xl text-2xl font-bold"
-                  >
+                <input
+                  value={seriesTeam}
+                  onChange={(e) =>
+                    setSeriesTeam(
+                      e.target.value
+                    )
+                  }
+                  placeholder="MTL ou CAR"
+                  className="w-full bg-zinc-800 rounded-2xl px-4 py-4 text-xl"
+                />
 
-                    Prédire
+                <input
+                  value={seriesGames}
+                  onChange={(e) =>
+                    setSeriesGames(
+                      e.target.value
+                    )
+                  }
+                  placeholder="4 à 7"
+                  className="w-full bg-zinc-800 rounded-2xl px-4 py-4 text-xl"
+                />
 
-                  </a>
+                <input
+                  value={seriesName}
+                  onChange={(e) =>
+                    setSeriesName(
+                      e.target.value
+                    )
+                  }
+                  placeholder="Ton nom"
+                  className="w-full bg-zinc-800 rounded-2xl px-4 py-4 text-xl"
+                />
 
-                  <a
-                    href={`/predictions/${game.gameId}`}
-                    className="bg-zinc-700 hover:bg-zinc-600 px-8 py-4 rounded-2xl text-2xl font-bold"
-                  >
+                <button
+                  onClick={voteSeries}
+                  className="w-full bg-green-600 hover:bg-green-700 rounded-2xl py-4 text-2xl font-bold"
+                >
 
-                    Voir
+                  Enregistrer
 
-                  </a>
-
-                </div>
+                </button>
 
               </div>
 
-            )
-          )}
+            )}
+
+            {/* RESULTS */}
+
+            <div className="space-y-4">
+
+              {seriesPredictions.map(
+                (
+                  prediction: any,
+                  index: number
+                ) => (
+
+                  <div
+                    key={index}
+                    className="bg-zinc-900 rounded-2xl p-4"
+                  >
+
+                    <div className="text-2xl font-bold text-yellow-400 mb-2">
+
+                      {prediction.prediction}
+
+                    </div>
+
+                    <div className="text-xl">
+
+                      👤 {prediction.name}
+
+                    </div>
+
+                  </div>
+
+                )
+              )}
+
+            </div>
+
+          </div>
 
         </div>
 
