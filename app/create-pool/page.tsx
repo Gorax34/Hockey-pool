@@ -41,14 +41,14 @@ export default function CreatePool() {
     <main className="min-h-screen bg-zinc-900 text-white flex flex-col items-center justify-center">
 
       <h1 className="text-5xl font-bold mb-8">
-        Créer un Pool
+        Créer un Account
       </h1>
 
       <div className="bg-zinc-800 p-8 rounded-2xl w-[400px]">
 
         <input
           type="text"
-          placeholder="Nom du Pool"
+          placeholder="Nom d'utilisateur"
           value={poolName}
           onChange={(e) => setPoolName(e.target.value)}
           className="w-full p-3 rounded-lg bg-zinc-700 mb-4"

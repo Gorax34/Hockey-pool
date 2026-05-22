@@ -36,7 +36,7 @@ export default function HomePage() {
                 href="/create-pool"
                 className="bg-red-600 hover:bg-red-700 transition px-10 py-4 rounded-2xl text-2xl font-bold shadow-xl"
               >
-                Créer un Pool
+                Créer un Account
               </a>
 
               <a
