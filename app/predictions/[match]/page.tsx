@@ -30,19 +30,24 @@ export default function PredictionsPage() {
   ] = useState<any[]>([]);
 
   const [
+    goals,
+    setGoals
+  ] = useState<any[]>([]);
+
+  const [
     loading,
     setLoading
   ] = useState(true);
+
+  // =========================
+  // LOAD PREDICTIONS
+  // =========================
 
   useEffect(() => {
 
     async function loadPredictions() {
 
       try {
-
-        // =========================
-        // FIREBASE
-        // =========================
 
         const snapshot =
           await getDocs(
@@ -53,10 +58,6 @@ export default function PredictionsPage() {
             )
 
           );
-
-        // =========================
-        // FORMAT DATA
-        // =========================
 
         const data =
           snapshot.docs.map(
@@ -69,20 +70,6 @@ export default function PredictionsPage() {
             })
           );
 
-        console.log(
-          "ALL PREDICTIONS:",
-          data
-        );
-
-        console.log(
-          "CURRENT MATCH:",
-          match
-        );
-
-        // =========================
-        // FILTER GAME
-        // =========================
-
         const filtered =
           data.filter(
 
@@ -93,11 +80,6 @@ export default function PredictionsPage() {
               ) === match
 
           );
-
-        console.log(
-          "FILTERED:",
-          filtered
-        );
 
         setPredictions(filtered);
 
@@ -116,6 +98,53 @@ export default function PredictionsPage() {
     loadPredictions();
 
   }, [match]);
+
+  // =========================
+  // LOAD LIVE GOALS
+  // =========================
+
+  useEffect(() => {
+
+    async function loadGoals() {
+
+      try {
+
+        const response =
+          await fetch(
+            "/api/live-game"
+          );
+
+        const data =
+          await response.json();
+
+        setGoals(
+          data.goals
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+      }
+
+    }
+
+    loadGoals();
+
+    // AUTO REFRESH
+
+    const interval =
+      setInterval(
+        loadGoals,
+        15000
+      );
+
+    return () =>
+      clearInterval(
+        interval
+      );
+
+  }, []);
 
   return (
 
@@ -161,127 +190,205 @@ export default function PredictionsPage() {
 
         )}
 
-        {/* LIST */}
+        {/* LAYOUT */}
 
-        <div className="space-y-6">
+        <div className="flex gap-8 items-start">
 
-          {predictions.map(
-            (
-              prediction,
-              index
-            ) => (
+          {/* PREDICTIONS */}
 
-              <div
-                key={index}
-                className="bg-black/80 border border-white/10 rounded-3xl p-6 max-w-[700px]"
-              >
+          <div className="space-y-6 flex-1">
 
-                {/* HEADER */}
+            {predictions.map(
+              (
+                prediction,
+                index
+              ) => (
 
-                <div className="flex items-center justify-between mb-4">
+                <div
+                  key={index}
+                  className="bg-black/80 border border-white/10 rounded-3xl p-6 max-w-[700px]"
+                >
 
-                  <h2 className="text-4xl font-bold">
+                  {/* HEADER */}
+
+                  <div className="flex items-center justify-between mb-4">
+
+                    <h2 className="text-4xl font-bold">
+
+                      {
+                        prediction.player
+                      }
+
+                    </h2>
+
+                    <div className="text-5xl font-bold text-yellow-400">
+
+                      {
+                        prediction.homeScore
+                      }
+
+                      {" - "}
+
+                      {
+                        prediction.awayScore
+                      }
+
+                    </div>
+
+                  </div>
+
+                  {/* MATCH */}
+
+                  <div className="text-2xl mb-4">
 
                     {
-                      prediction.player
+                      prediction.homeTeam
                     }
 
-                  </h2>
-
-                  <div className="text-5xl font-bold text-yellow-400">
+                    {" VS "}
 
                     {
-                      prediction.homeScore
+                      prediction.awayTeam
                     }
 
-                    {" - "}
+                  </div>
+
+                  {/* WINNER */}
+
+                  <div className="text-green-400 text-2xl font-bold mb-5">
+
+                    Gagnant :
+
+                    {" "}
 
                     {
-                      prediction.awayScore
+                      prediction.winner
                     }
+
+                  </div>
+
+                  {/* PLAYERS */}
+
+                  <div className="flex flex-wrap gap-2 mb-6">
+
+                    {prediction.players?.map(
+                      (
+                        player: string,
+                        i: number
+                      ) => (
+
+                        <div
+                          key={i}
+                          className="bg-red-600 px-4 py-2 rounded-xl text-sm font-bold"
+                        >
+
+                          {player}
+
+                        </div>
+
+                      )
+                    )}
+
+                  </div>
+
+                  {/* POINTS */}
+
+                  <div className="flex items-center justify-between">
+
+                    <div className="text-2xl">
+
+                      Points du pool
+
+                    </div>
+
+                    <div className="text-5xl font-bold text-yellow-400">
+
+                      {
+                        prediction.points ?? 0
+                      }
+
+                    </div>
 
                   </div>
 
                 </div>
 
-                {/* MATCH */}
+              )
+            )}
 
-                <div className="text-2xl mb-4">
+          </div>
 
-                  {
-                    prediction.homeTeam
-                  }
+          {/* LIVE GOALS */}
 
-                  {" VS "}
+          <div className="w-[420px] bg-black/80 border border-white/10 rounded-3xl p-6 sticky top-8 overflow-hidden">
 
-                  {
-                    prediction.awayTeam
-                  }
+            <h2 className="text-4xl font-bold mb-6">
 
-                </div>
+              🏒 Buts en direct
 
-                {/* WINNER */}
+            </h2>
 
-                <div className="text-green-400 text-2xl font-bold mb-5">
+            <div className="flex gap-4 overflow-x-auto pb-4">
 
-                  Gagnant :
+              {goals.map(
+                (
+                  goal: any,
+                  index: number
+                ) => (
 
-                  {" "}
+                  <div
+                    key={index}
+                    className="min-w-[320px] bg-zinc-900 rounded-3xl p-5 flex-shrink-0"
+                  >
 
-                  {
-                    prediction.winner
-                  }
+                    {/* SCORER */}
 
-                </div>
+                    <div className="text-2xl font-bold text-yellow-400 mb-2">
 
-                {/* PLAYERS */}
+                      {goal.scorer}
 
-                <div className="flex flex-wrap gap-2 mb-6">
+                    </div>
 
-                  {prediction.players?.map(
-                    (
-                      player: string,
-                      i: number
-                    ) => (
+                    {/* ASSISTS */}
 
-                      <div
-                        key={i}
-                        className="bg-red-600 px-4 py-2 rounded-xl text-sm font-bold"
-                      >
+                    <div className="text-lg text-gray-300 mb-3">
 
-                        {player}
+                      {goal.assists.join(", ")}
 
-                      </div>
+                    </div>
 
-                    )
-                  )}
+                    {/* SCORE */}
 
-                </div>
+                    <div className="text-green-400 font-bold text-xl">
 
-                {/* POINTS */}
+                      {goal.homeScore}
 
-                <div className="flex items-center justify-between">
+                      {" - "}
 
-                  <div className="text-2xl">
+                      {goal.awayScore}
 
-                    Points du pool
+                    </div>
 
-                  </div>
+                    {/* TIME */}
 
-                  <div className="text-5xl font-bold text-yellow-400">
+                    <div className="text-gray-400 mt-2">
 
-                    {
-                      prediction.points ?? 0
-                    }
+                      P{goal.period}
+
+                      {" - "}
+
+                      {goal.time}
+
+                    </div>
 
                   </div>
 
-                </div>
+                )
+              )}
 
-              </div>
+            </div>
 
-            )
-          )}
+          </div>
 
         </div>
 
