@@ -140,15 +140,55 @@ export async function GET(
 
         {
           scorer:
-            "Slafkovsky",
+            "Eric Robinson",
 
           assists: [
-            "Demidov"
+            "W.Carrier",
+            "M.Jankowski"
+          ],
+        },
+{
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
           ],
         },
 
-      ],
+        {
+          scorer:
+            "",
 
+          assists: [
+            "",
+            ""
+          ],
+        },
+      
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ],
+
+
+
+
+
+
+
+
+
+      
     };
 
     // =========================
