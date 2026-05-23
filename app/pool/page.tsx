@@ -183,7 +183,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "0-0",
+      serie: "1-0",
     },
 
     {
@@ -195,7 +195,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "0-0",
+      serie: "1-0",
     },
 
     {
@@ -207,7 +207,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "0-0",
+      serie: "1-0",
     },
 
     {
@@ -219,7 +219,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "0-0",
+      serie: "1-0",
     },
 
     {
@@ -231,7 +231,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "0-0",
+      serie: "1-0",
     },
 
   ];
