@@ -149,11 +149,11 @@ export async function GET(
         },
 {
           scorer:
-            "",
+            "Josh Anderson",
 
           assists: [
-            "",
-            ""
+            "P.Danault",
+            "K.Guhle"
           ],
         },
 
