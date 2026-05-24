@@ -159,7 +159,7 @@ export default function PoolPage() {
       homeScore: 6,
       awayScore: 2,
       status: "terminer",
-      serie: "1-1",
+      serie: "1-0",
     },
 
     {
