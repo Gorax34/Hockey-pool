@@ -187,13 +187,6 @@ export async function GET(
           ],
         },
     
-    
-    
-    
-    
-    
-    
-    
     ],
 
         "2025030313": [
