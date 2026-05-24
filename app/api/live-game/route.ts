@@ -127,7 +127,7 @@ export async function GET(
 
         {
           scorer:
-            "S.Juraj SlafkovskyAho",
+            "S.Juraj Slafkovsky",
 
           assists: [
             "N.Suzuki",
