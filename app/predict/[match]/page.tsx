@@ -216,7 +216,7 @@ export default function PredictPage() {
 
               collection(
   db,
-  `predictions-${params.match}`
+  "predictions"
 ),
 
               where(
@@ -253,7 +253,7 @@ export default function PredictPage() {
 
           collection(
   db,
-  `predictions-${params.match}`
+  "predictions"
 ),
 
           {

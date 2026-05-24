@@ -82,7 +82,7 @@ const nhlGameIds: any = {
 
             collection(
   db,
-  `predictions-${match}`
+  "predictions"
 )
 
           );
