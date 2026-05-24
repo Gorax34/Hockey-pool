@@ -41,7 +41,7 @@ const allPlayers = [
   "Dach",
   "Bolduc",
 
-  "Florian Xhekaj",
+  
   "Evans",
   "Gallagher",
 
@@ -53,7 +53,7 @@ const allPlayers = [
   "Guhle",
   "Dobson",
 
-  "Arber Xhekaj",
+  "Xhekaj",
   "Carrier",
 
   "Struble",
