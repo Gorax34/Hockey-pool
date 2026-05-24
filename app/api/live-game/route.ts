@@ -159,7 +159,7 @@ export async function GET(
 
         {
           scorer:
-            "Nikolaj Ehllers",
+            "Nikolaj Ehlers",
 
           assists: [
             "J.Slavin",
