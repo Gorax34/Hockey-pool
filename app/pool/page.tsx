@@ -159,7 +159,7 @@ export default function PoolPage() {
       homeScore: 6,
       awayScore: 2,
       status: "terminer",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -169,9 +169,9 @@ export default function PoolPage() {
       homeTeam: "Canadiens",
       awayTeam: "Hurricanes",
       homeScore: 2,
-      awayScore: 2,
+      awayScore: 3,
       status: "en cours",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -183,7 +183,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -195,7 +195,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -207,7 +207,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -219,7 +219,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-0",
+      serie: "1-1",
     },
 
     {
@@ -231,7 +231,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-0",
+      serie: "1-1",
     },
 
   ];
