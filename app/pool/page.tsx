@@ -170,7 +170,7 @@ export default function PoolPage() {
       awayTeam: "Hurricanes",
       homeScore: 2,
       awayScore: 3,
-      status: "en cours",
+      status: "terminer",
       serie: "1-1",
     },
 
