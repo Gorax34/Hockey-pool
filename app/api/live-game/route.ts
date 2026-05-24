@@ -159,11 +159,11 @@ export async function GET(
 
         {
           scorer:
-            "",
+            "Nikolaj Ehllers",
 
           assists: [
-            "",
-            ""
+            "J.Slavin",
+            "J.Chatfield"
           ],
         },
       
