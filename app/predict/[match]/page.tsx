@@ -215,9 +215,9 @@ export default function PredictPage() {
             query(
 
               collection(
-                db,
-                "predictions"
-              ),
+  db,
+  `predictions-${params.match}`
+),
 
               where(
                 "player",
@@ -252,9 +252,9 @@ export default function PredictPage() {
         await addDoc(
 
           collection(
-            db,
-            "predictions"
-          ),
+  db,
+  `predictions-${params.match}`
+),
 
           {
 
@@ -476,6 +476,9 @@ export default function PredictPage() {
               )
             )}
 
+            
+            
+            
             {/* SAVE */}
 
             <button

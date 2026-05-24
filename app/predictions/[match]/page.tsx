@@ -81,9 +81,9 @@ const nhlGameIds: any = {
           await getDocs(
 
             collection(
-              db,
-              "predictions"
-            )
+  db,
+  `predictions-${match}`
+)
 
           );
 
