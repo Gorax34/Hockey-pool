@@ -85,7 +85,7 @@ const allPlayers = [
 
   "K'Andre Miller",
   "Shawn Walker",
-
+  "Ehlers",
   "Nikishin",
   "Gostisbehere",
 
