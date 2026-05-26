@@ -212,11 +212,11 @@ export async function GET(
 
         {
           scorer:
-            "",
+            "Taylor Hall",
 
           assists: [
-            "",
-            ""
+            "K.Miller",
+            "J.Blake"
           ],
         },
       
