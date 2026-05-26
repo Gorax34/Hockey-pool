@@ -178,12 +178,12 @@ export default function PoolPage() {
       gameId: "game-3",
       match: "Match 3",
       date: "Lun. 25 mai",
-      homeTeam: "Hurricanes",
-      awayTeam: "Canadiens",
-      homeScore: 2,
+      homeTeam: "Hurricanes (3)",
+      awayTeam: "Canadiens (2)",
+      homeScore: 3,
       awayScore: 2,
       status: "en cours",
-      serie: "1-1",
+      serie: "2-1",
     },
 
     {
@@ -195,7 +195,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-1",
+      serie: "2-1",
     },
 
     {
@@ -207,7 +207,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-1",
+      serie: "1-2",
     },
 
     {
@@ -219,7 +219,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-1",
+      serie: "1-2",
     },
 
     {

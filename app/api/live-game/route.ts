@@ -232,11 +232,11 @@ export async function GET(
     
     {
           scorer:
-            "",
+            "Sebastian Aho",
 
           assists: [
-            "",
-            ""
+            "A.svecchnikov",
+            "S.Jarvis"
           ],
         },
     
