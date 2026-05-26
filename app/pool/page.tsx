@@ -180,7 +180,7 @@ export default function PoolPage() {
       date: "Lun. 25 mai",
       homeTeam: "Hurricanes",
       awayTeam: "Canadiens",
-      homeScore: 0,
+      homeScore: 1,
       awayScore: 0,
       status: "en cours",
       serie: "1-1",
