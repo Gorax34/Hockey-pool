@@ -202,11 +202,11 @@ export async function GET(
         },
 {
           scorer:
-            "",
+            "Mike Matheson",
 
           assists: [
-            "",
-            ""
+            "I.Demidov",
+            "J.Evans"
           ],
         },
 
