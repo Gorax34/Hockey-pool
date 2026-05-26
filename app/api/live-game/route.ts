@@ -235,7 +235,7 @@ export async function GET(
             "Sebastian Aho",
 
           assists: [
-            "A.svecchnikov",
+            "A.Svechnikov",
             "S.Jarvis"
           ],
         },
