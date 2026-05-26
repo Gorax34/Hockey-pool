@@ -193,11 +193,11 @@ export async function GET(
 
         {
           scorer:
-            "",
+            "Shayne Gostisbehere",
 
           assists: [
-            "",
-            ""
+            "M.Jankowski",
+            "E.Robinson"
           ],
         },
 {
