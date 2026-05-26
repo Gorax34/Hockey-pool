@@ -222,11 +222,11 @@ export async function GET(
       
     {
           scorer:
-            "",
+            "Lane Hutson",
 
           assists: [
-            "",
-            ""
+            "C.Caufield",
+            "J.Dobes"
           ],
         },
     
