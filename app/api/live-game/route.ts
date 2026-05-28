@@ -281,6 +281,25 @@ export async function GET(
       
     {
           scorer:
+            "Andrei Svechnikov",
+
+          assists: [
+            "J.Chatfield",
+            ""
+          ],
+        },
+    
+    {
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
+          ],
+        },
+        {
+          scorer:
             "",
 
           assists: [
@@ -298,8 +317,25 @@ export async function GET(
             ""
           ],
         },
+        {
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
+          ],
+        },
     
-    
+    {
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
+          ],
+        },
     
     
     
