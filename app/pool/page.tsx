@@ -219,7 +219,7 @@ export default function PoolPage() {
       homeScore: 0,
       awayScore: 0,
       status: "À venir",
-      serie: "1-2",
+      serie: "2-1",
     },
 
     {
