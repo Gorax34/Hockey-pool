@@ -252,30 +252,30 @@ export async function GET(
 
         {
           scorer:
-            "",
+            "Sebastian Aho",
 
           assists: [
-            "",
-            ""
+            "N.Ehlers",
+            "S.Gostisbehere"
           ],
         },
 {
           scorer:
-            "",
+            "Jordan Staal",
 
           assists: [
-            "",
-            ""
+            "K.Miller",
+            "N.Ehlers"
           ],
         },
 
         {
           scorer:
-            "",
+            "Logan Stankoven",
 
           assists: [
-            "",
-            ""
+            "J.Blake",
+            "S.Gostisbehere"
           ],
         },
       
