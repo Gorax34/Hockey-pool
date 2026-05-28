@@ -194,7 +194,7 @@ export default function PoolPage() {
       awayTeam: "Canadiens (0)",
       homeScore: 4,
       awayScore: 0,
-      status: "en cours",
+      status: "terminer",
       serie: "3-1",
     },
 
