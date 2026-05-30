@@ -344,7 +344,101 @@ export async function GET(
     
     ],
 
+         "2025030315": [
 
+        {
+          scorer:
+            "Taylor Hall",
+
+          assists: [
+            "L.Stankoven",
+            "J.Blake"
+          ],
+        },
+{
+          scorer:
+            "Logan Stankoven",
+
+          assists: [
+            "T.Hall",
+            "A.Nikishin"
+          ],
+        },
+
+        {
+          scorer:
+            "Eric Robinson",
+
+          assists: [
+            "W.Carrier",
+            ""
+          ],
+        },
+      
+    {
+          scorer:
+            "Jackson Blake",
+
+          assists: [
+            "T.Hall",
+            "L.Stankoven"
+          ],
+        },
+    
+    {
+          scorer:
+            "Shayne Gostisbehere",
+
+          assists: [
+            "S.Jarvis",
+            "N.Ehlers"
+          ],
+        },
+        {
+          scorer:
+            "Cole Caufield",
+
+          assists: [
+            "L.Hutson",
+            ""
+          ],
+        },
+    
+    {
+          scorer:
+            "Seth Jarvis ",
+
+          assists: [
+            "S.Aho",
+            "A.Svechnikov"
+          ],
+        },
+        {
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
+          ],
+        },
+    
+    {
+          scorer:
+            "",
+
+          assists: [
+            "",
+            ""
+          ],
+        },
+    
+    
+    
+    
+    
+    
+    ],
 
 
 
